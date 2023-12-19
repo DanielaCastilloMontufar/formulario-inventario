@@ -42,3 +42,32 @@
     cursor: pointer;
   }
   
+  .styled-select {
+    position: relative;
+    width: 100%;
+}
+
+.styled-select select {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    height: 50px;
+    background-color: #ebebeb;
+    border-radius: 20px;
+    box-sizing: border-box;
+    color: black;
+    appearance: none;
+    font-weight: 500;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    cursor: pointer;
+}
+
+.styled-select::after {
+    content: '\25BC'; /* flecha hacia abajo Unicode */
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-50%);
+    pointer-events: none;
+}

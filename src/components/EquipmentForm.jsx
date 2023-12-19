@@ -1,6 +1,7 @@
+// EquipmentForm.jsx
 import { useState } from 'react';
 import { supabase } from '../utils/supabase';
-import './EquipmentForm.css'; // Agrega un archivo CSS para estilos
+import './EquipmentForm.css';
 
 const EquipmentForm = () => {
     const [formData, setFormData] = useState({
@@ -23,6 +24,81 @@ const EquipmentForm = () => {
 
     const [showSuccessDialog, setShowSuccessDialog] = useState(false);
 
+    const areaOptions = [
+        'TECNOLOGIA DE INFORMACION',
+        'CONTABILIDAD',
+        'COMERCIAL',
+        'CAJA',
+        'PROTESTOS',
+        'ORIGEN',
+        'SECRETARIA',
+        'SALON VITOR',
+        'SALON CERVESUR',
+        'LEGAL',
+        'DIRECTORIO 3',
+        'SALON 1',
+        'SALON 2',
+        'SALON 3',
+        'AUDITORIO',
+        'COCINA',
+        'BAÑO PERSONAL',
+        'BAÑO SALON CERVESUR',
+        'BAÑO AUDITORIO',
+        'HALL PRIMERA CASONA',
+        'HALL SEGUNDA CASONA',
+        'MENSAJERIA',
+        'GERENCIA',
+        'SUBGERENCIA',
+        'ARBITRAJE',
+        'ARBITRAJE 2',
+        'SECRETARIA ARBITRAL',
+    ];
+
+    const attendantOptions = [
+        'FABIOLA LÓPEZ CHIRINOS',
+        'KATHERINE SUEROS',
+        'RUTH VARGAS',
+        'ALEJANDRA ALVARADO',
+        'GONZALO ZAVALAGA',
+        'TAMARA NUÑEZ',
+        'DANIELA BENAVENTE',
+        'ANTONIO ESCALANTE',
+        'JOCELYN CARI',
+        'GERALDINE MARQUÉZ',
+        'MÓNICA TORRES',
+        'GUSTAVO CHIRINOS',
+        'BROSWI GALVEZ',
+        'SALOMÉ GALDOS',
+        'JUAN JAVIER',
+        'LUCIANO YNCA',
+        'LUDOVINA VILLANUEVA',
+        'JIMENA HURTADO',
+        'MILUSKA MANRIQUE',
+        'JUAN JOSE TICONA',
+        'DIEGO VALDIVIA',
+        'GIORDANO ARIAS',
+    ];
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+
+        // Actualizar el valor del campo "slug" según "title" y "serial"
+        if (name === 'title' || name === 'serial') {
+            const formattedTitle = formData.title.toLowerCase().replace(/\s+/g, '_');
+            const formattedSerial = formData.serial.toLowerCase().replace(/\s+/g, '_');
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+                slug: `${formattedTitle}_${formattedSerial}`,
+            }));
+        } else {
+            setFormData((prevData) => ({
+                ...prevData,
+                [name]: value,
+            }));
+        }
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
@@ -44,21 +120,13 @@ const EquipmentForm = () => {
         }
     };
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
-
     const handleAccept = () => {
-        // Ocultar el cuadro de diálogo de éxito
         setShowSuccessDialog(false);
-        // Recargar la página
         window.location.reload();
     };
+
+    const sortedAttendantOptions = attendantOptions.slice().sort();
+    const sortedAreaOptions = areaOptions.slice().sort();
 
     return (
         <form className="equipment-form" onSubmit={handleSubmit}>
@@ -207,12 +275,20 @@ const EquipmentForm = () => {
                 <div className="field">
                     <label>
                         Encargado del Equipo:
-                        <input
-                            type="text"
-                            name="attendant"
-                            value={formData.attendant}
-                            onChange={handleChange}
-                        />
+                        <div className="styled-select">
+                            <select
+                                name="attendant"
+                                value={formData.attendant}
+                                onChange={handleChange}
+                            >
+                                <option value="">Selecciona una opción</option>
+                                {sortedAttendantOptions.map((option) => (
+                                    <option key={option} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </label>
                 </div>
             </div>
@@ -221,25 +297,35 @@ const EquipmentForm = () => {
                 <div className="field">
                     <label>
                         Área:
-                        <input
-                            type="text"
-                            name="area"
-                            value={formData.area}
-                            onChange={handleChange}
-                        />
+                        <div className="styled-select">
+                            <select
+                                name="area"
+                                value={formData.area}
+                                onChange={handleChange}
+                                className="styled-select"
+                            >
+                                <option value="">Selecciona una opción</option>
+                                {sortedAreaOptions.map((option) => (
+                                    <option key={option} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
                     </label>
                 </div>
 
                 <div className="field">
-                    <label>
+                <label>
                         Slug:
                         <input
                             type="text"
                             name="slug"
                             value={formData.slug}
                             onChange={handleChange}
+                            readOnly // Para que el usuario no pueda modificar el slug directamente
                         />
-                    </label>
+                    </label>    
                 </div>
             </div>
 
@@ -247,7 +333,6 @@ const EquipmentForm = () => {
                 <button type="submit">Guardar</button>
             </div>
 
-            {/* Cuadro de diálogo de éxito */}
             {showSuccessDialog && (
                 <div className="success-dialog">
                     <p>Se ha guardado exitosamente</p>
