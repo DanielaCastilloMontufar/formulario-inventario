@@ -1,0 +1,44 @@
+.equipment-form {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 8px;
+    width: 90%;
+    margin: auto;
+  }
+  
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .field {
+    width: 40%;
+  }
+  
+  label {
+    display: block;
+    margin-top: 20px;
+    font-weight: 700;
+  }
+  
+  input {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    height: 40px;
+    background-color: #ebebeb;
+    border-radius: 20px;
+    box-sizing: border-box;
+    color: black;
+  }
+  
+  button {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
