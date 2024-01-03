@@ -1,13 +1,37 @@
-// src/App.jsx
-import EquipmentForm from './components/EquipmentForm';
 
-function App() {
+// import { useState } from 'react';
+// import EquipmentForm from '../src/components/EquipmentForm';
+// import LoginForm from '../src/components/LoginForm';
+import './App.css';
+import Navbar from './components/Navbar';
+import { lightTheme } from '../themes'
+import { ThemeProvider } from '@mui/material'
+// import HomePage from '.';
+import { BrowserRouter } from 'react-router-dom';
+import Views from './Views';
+import { LoginContextProvider } from './context/LoginContext';
+// import { AuthProvider } from './context/auth/AuthContext';
+// import { HomePage } from './index'
+
+const App = () => {
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  // const handleLogin = () => {
+  //   setIsLoggedIn(true);
+  // };
+
   return (
-    <div>
-      <h1>Formulario de Equipos</h1>
-      <EquipmentForm />
-    </div>
+    <ThemeProvider theme={lightTheme}>
+
+      <BrowserRouter>
+        <LoginContextProvider>
+          <Navbar />
+          <Views />
+        </LoginContextProvider>
+      </BrowserRouter>
+
+    </ThemeProvider>
   );
-}
+};
 
 export default App;

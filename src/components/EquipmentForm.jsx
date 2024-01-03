@@ -1,7 +1,8 @@
-// EquipmentForm.jsx
+
 import { useState } from 'react';
-import { supabase } from '../utils/supabase';
+import { supabase } from '../utils/client';
 import './EquipmentForm.css';
+import { Typography } from '@mui/material';
 
 const EquipmentForm = () => {
     const [formData, setFormData] = useState({
@@ -79,8 +80,14 @@ const EquipmentForm = () => {
         'GIORDANO ARIAS',
     ];
 
+    const stateOptions = ['NUEVO', 'OBSOLETO', 'EN USO'];
+    const yesNoOptions = ['SI', 'NO'];
+
     const handleChange = (e) => {
         const { name, value } = e.target;
+
+        // Convertir a mayúsculas
+        const formattedValue = name !== 'slug' ? value.toUpperCase() : value;
 
         // Actualizar el valor del campo "slug" según "title" y "serial"
         if (name === 'title' || name === 'serial') {
@@ -88,13 +95,13 @@ const EquipmentForm = () => {
             const formattedSerial = formData.serial.toLowerCase().replace(/\s+/g, '_');
             setFormData((prevData) => ({
                 ...prevData,
-                [name]: value,
+                [name]: formattedValue,
                 slug: `${formattedTitle}_${formattedSerial}`,
             }));
         } else {
             setFormData((prevData) => ({
                 ...prevData,
-                [name]: value,
+                [name]: formattedValue,
             }));
         }
     };
@@ -127,12 +134,13 @@ const EquipmentForm = () => {
 
     const sortedAttendantOptions = attendantOptions.slice().sort();
     const sortedAreaOptions = areaOptions.slice().sort();
+    const sortedStateOptions = stateOptions.slice().sort();
 
     return (
         <form className="equipment-form" onSubmit={handleSubmit}>
             <div className="form-row">
                 <div className="field">
-                    <label>
+                    <Typography variant='subtitle1' component='subtitle1'>
                         Tipo de Activo:
                         <input
                             type="text"
@@ -140,11 +148,10 @@ const EquipmentForm = () => {
                             value={formData.active_type}
                             onChange={handleChange}
                         />
-                    </label>
+                    </Typography>
                 </div>
-
                 <div className="field">
-                    <label>
+                    <Typography variant='subtitle1' component='subtitle1'>
                         Nombre del Equipo:
                         <input
                             type="text"
@@ -152,13 +159,10 @@ const EquipmentForm = () => {
                             value={formData.title}
                             onChange={handleChange}
                         />
-                    </label>
+                    </Typography>
                 </div>
-            </div>
-
-            <div className="form-row">
                 <div className="field">
-                    <label>
+                    <Typography variant='subtitle1' component='subtitle1'>
                         Cantidad:
                         <input
                             type="number"
@@ -166,11 +170,10 @@ const EquipmentForm = () => {
                             value={formData.quantity}
                             onChange={handleChange}
                         />
-                    </label>
+                    </Typography>
                 </div>
-
                 <div className="field">
-                    <label>
+                    <Typography variant='subtitle1' component='subtitle1'>
                         Marca:
                         <input
                             type="text"
@@ -178,13 +181,13 @@ const EquipmentForm = () => {
                             value={formData.brand}
                             onChange={handleChange}
                         />
-                    </label>
+                    </Typography>
                 </div>
             </div>
 
             <div className="form-row">
                 <div className="field">
-                    <label>
+                    <Typography variant='subtitle1' component='subtitle1'>
                         Modelo:
                         <input
                             type="text"
@@ -192,10 +195,10 @@ const EquipmentForm = () => {
                             value={formData.model}
                             onChange={handleChange}
                         />
-                    </label>
+                    </Typography>
                 </div>
                 <div className="field">
-                    <label>
+                    <Typography variant='subtitle1' component='subtitle1'>
                         Número de Serie:
                         <input
                             type="text"
@@ -203,13 +206,10 @@ const EquipmentForm = () => {
                             value={formData.serial}
                             onChange={handleChange}
                         />
-                    </label>
+                    </Typography>
                 </div>
-            </div>
-
-            <div className="form-row">
                 <div className="field">
-                    <label>
+                    <Typography variant='subtitle1' component='subtitle1'>
                         Medidas:
                         <input
                             type="text"
@@ -217,11 +217,10 @@ const EquipmentForm = () => {
                             value={formData.measures}
                             onChange={handleChange}
                         />
-                    </label>
+                    </Typography>
                 </div>
-
                 <div className="field">
-                    <label>
+                    <Typography variant='subtitle1' component='subtitle1'>
                         Color:
                         <input
                             type="text"
@@ -229,51 +228,54 @@ const EquipmentForm = () => {
                             value={formData.color}
                             onChange={handleChange}
                         />
-                    </label>
+                    </Typography>
                 </div>
             </div>
 
             <div className="form-row">
                 <div className="field">
-                    <label>
+                    <Typography variant='subtitle1' component='subtitle1'>
                         Estado:
-                        <input
-                            type="text"
-                            name="state"
-                            value={formData.state}
-                            onChange={handleChange}
-                        />
-                    </label>
+                        <div className="styled-select">
+                            <select
+                                name="state"
+                                value={formData.state}
+                                onChange={handleChange}
+                                className="styled-select"
+                            >
+                                <option value="">Selecciona una opción</option>
+                                {sortedStateOptions.map((option) => (
+                                    <option key={option} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </Typography>
                 </div>
-
                 <div className="field">
-                    <label>
+                    <Typography variant='subtitle1' component='subtitle1'>
                         Condición de Uso:
-                        <input
-                            type="text"
-                            name="condition_use"
-                            value={formData.condition_use}
-                            onChange={handleChange}
-                        />
-                    </label>
-                </div>
-            </div>
-
-            <div className="form-row">
-                <div className="field">
-                    <label>
-                        Etiquetas:
-                        <input
-                            type="text"
-                            name="tags"
-                            value={formData.tags}
-                            onChange={handleChange}
-                        />
-                    </label>
+                        <div className="styled-select">
+                            <select
+                                name="condition_use"
+                                value={formData.condition_use}
+                                onChange={handleChange}
+                                className="styled-select"
+                            >
+                                <option value="">Selecciona una opción</option>
+                                {yesNoOptions.map((option) => (
+                                    <option key={option} value={option}>
+                                        {option}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </Typography>
                 </div>
 
                 <div className="field">
-                    <label>
+                    <Typography variant='subtitle1' component='subtitle1'>
                         Encargado del Equipo:
                         <div className="styled-select">
                             <select
@@ -289,13 +291,11 @@ const EquipmentForm = () => {
                                 ))}
                             </select>
                         </div>
-                    </label>
+                    </Typography>
                 </div>
-            </div>
 
-            <div className="form-row">
                 <div className="field">
-                    <label>
+                    <Typography variant='subtitle1' component='subtitle1'>
                         Área:
                         <div className="styled-select">
                             <select
@@ -312,26 +312,33 @@ const EquipmentForm = () => {
                                 ))}
                             </select>
                         </div>
-                    </label>
+                    </Typography>
                 </div>
 
+
+            </div>
+
+            <div className="form-row">
                 <div className="field">
-                <label>
+                    <Typography variant='subtitle1' component='subtitle1'>
                         Slug:
                         <input
                             type="text"
                             name="slug"
                             value={formData.slug}
                             onChange={handleChange}
-                            readOnly // Para que el usuario no pueda modificar el slug directamente
+                            readOnly
                         />
-                    </label>    
+                    </Typography>
                 </div>
+                <div className="form-row">
+                    <button type="submit">Guardar</button>
+                </div>
+                <div className="field"></div>
+                <div className="field"></div>
             </div>
 
-            <div className="form-row">
-                <button type="submit">Guardar</button>
-            </div>
+
 
             {showSuccessDialog && (
                 <div className="success-dialog">
