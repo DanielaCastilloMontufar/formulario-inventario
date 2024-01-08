@@ -1,48 +1,47 @@
-// ProductDetailPage.js
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { supabase } from "../../utils/client"; // Asegúrate de importar tu configuración de Supabase
-import { Box, Grid, Typography } from "@mui/material";
+import { supabase } from "../../utils/client";
 import { ProductSlideshow } from "../ProductSlideshow";
-import Barcode from 'react-barcode';
+import Barcode from "react-barcode";
 import { useUsers } from "../../context/UserContext";
 import { useLogin } from "../../context/LoginContext";
-// import { data } from "autoprefixer";
+import Loading from "../Loading";
+import Layout from "../Layout";
 
 const ProductDetailPage = () => {
-  const { slug } = useParams();
+  const [loading, setLoading] = useState(true);
   const [product, setProduct] = useState(null);
-  const { userData, getUser } = useUsers();
-    // const [usuario, setUsuario] = useState(null)
-    const navigate = useNavigate();
-    const { user } = useLogin();
+  const { slug } = useParams();
+  const { getUser } = useUsers();
+  const { getSessionAuth } = useLogin();
+  const navigate = useNavigate();
 
-    console.log(user)
-
-    useEffect(() => {
-        if (user) {
-            // navigate("/areas", { replace: true });
-            getUser(user.id);
-        }
-        else {
-          navigate("/login");
-        }
-    }, [user])
+  useEffect(() => {
+    const sessionAuth = async () => {
+      const session = await getSessionAuth();
+      if (session) {
+        await getUser(session.id);
+      } else {
+        navigate("/", { replace: true });
+      }
+    };
+    sessionAuth();
+  }, []);
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
         const { data, error } = await supabase
-          .from('equipos')
-          .select('*')
-          .eq('slug', slug)
+          .from("equipos")
+          .select("*")
+          .eq("id", slug)
           .single();
 
         if (error) {
           console.error("Error fetching product:", error);
-        } else {
-          setProduct(data);
         }
+        setProduct(data);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching product:", error.message);
       }
@@ -56,89 +55,87 @@ const ProductDetailPage = () => {
   }
 
   return (
-    <Grid container spacing={3} marginTop={15}>
-      <Grid item xs={12} sm={7}>
-        {Array.isArray(product.images) && product.images.length > 0 ? (
-          <ProductSlideshow images={product.images} />
-        ) : (
-          <div>No hay imágenes disponibles</div>
-        )}
-
-      </Grid>
-      <Grid item xs={12} sm={5}>
-        <Typography variant='h1' component='h1'>{product.title}</Typography>
-        <Typography variant='subtitle1' component='h2'>{product.area}</Typography>
-        <Box display='flex'>
-          <Typography variant='subtitle1' component='h2' sx={{ mr: 1 }}>Encargado/a: </Typography>
-          <Typography variant='subtitle1' fontWeight={400}>{product.attendant}</Typography>
-        </Box>
-        <Grid container spacing={2} marginTop={1}>
-          <Grid item xs={10} sm={6}>
-            <Box>
-              <Typography variant='subtitle1'>Tipo de activo:</Typography>
-              <Typography variant='subtitle1' fontWeight={400}>{product.active_type}</Typography>
-            </Box>
-            <Box sx={{ mt: 1 }}>
-              <Typography variant='subtitle1'>Modelo:</Typography>
-              <Typography variant='subtitle1' fontWeight={400}>{product.model}</Typography>
-            </Box>
-
-            <Box sx={{ mt: 1 }}>
-              <Typography variant='subtitle1'>Medidas:</Typography>
-              <Typography variant='subtitle1' fontWeight={400}>{product.measures}</Typography>
-            </Box>
-
-            <Box sx={{ mt: 1 }}>
-              <Typography variant='subtitle1'>Constancia de uso:</Typography>
-              <Typography variant='subtitle1' fontWeight={400}>{product.condition_use}</Typography>
-            </Box>
-
-            <Box sx={{ mt: 1 }}>
-              <Typography variant='subtitle1'>Cantidad: </Typography>
-              <Typography variant='subtitle1' fontWeight={400}>{product.quantity}</Typography>
-            </Box>
-
-
-
-          </Grid>
-
-          <Grid item xs={10} sm={4}>
-            <Box>
-              <Typography variant='subtitle1'>Marca:</Typography>
-              <Typography variant='subtitle1' fontWeight={400}>{product.brand}</Typography>
-            </Box>
-            <Box sx={{ mt: 1 }}>
-              <Typography variant='subtitle1'>Número de serie:</Typography>
-              <Typography variant='subtitle1' fontWeight={400}>{product.serial}</Typography>
-            </Box>
-
-            <Box sx={{ mt: 1 }}>
-              <Typography variant='subtitle1'>Color:</Typography>
-              <Typography variant='subtitle1' fontWeight={400}>{product.color}</Typography>
-            </Box>
-
-            <Box sx={{ mt: 1 }}>
-              <Typography variant='subtitle1'>Estado:</Typography>
-              <Typography variant='subtitle1' fontWeight={400}>{product.state}</Typography>
-            </Box>
-
-
-            <Box sx={{ mt: 1 }}>
-              <Typography variant='subtitle1'>Fecha de compra:</Typography>
-              <Typography variant='subtitle1' fontWeight={400}>
-                {new Date(product.created_at).toLocaleDateString('es-ES', { year: 'numeric', month: 'long' }).replace(/^\w/, (c) => c.toUpperCase())}
-              </Typography>
-            </Box>
-
-          </Grid>
-
-        </Grid>
-        <Grid marginTop={5}>
-          <Barcode value={product.id} width={1.2} height={80} background="#b2eab8"/>
-        </Grid>
-      </Grid>
-
-    </Grid>
+    <Layout>
+      {loading && <Loading />}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+        <div className="w-full p-5">
+          {Array.isArray(product.images) && product.images.length > 0 ? (
+            <ProductSlideshow images={product.images} />
+          ) : (
+            <img
+              src={`/images/producto.jpeg`}
+              alt={`${product.title}`}
+              className="w-full aspect-square"
+            />
+          )}
+        </div>
+        <div className="w-full p-5">
+          <h2 className="text-3xl font-bold">{product.title}</h2>
+          <h3 className="text-lg font-medium">{product.area}</h3>
+          <h4 className="text-sm font-medium">
+            <strong>Encargado/a:</strong> {product.attendant}
+          </h4>
+          <div className="grid grid-cols-2 gap-5 mt-5">
+            <div className="flex flex-col">
+              <h5 className="text-sm font-bold">Tipo de activo:</h5>
+              <p className="text-sm font-medium">{product.active_type}</p>
+            </div>
+            <div className="flex flex-col">
+              <h5 className="text-sm font-bold">Modelo:</h5>
+              <p className="text-sm font-medium">{product.model}</p>
+            </div>
+            <div className="flex flex-col">
+              <h5 className="text-sm font-bold">Marca:</h5>
+              <p className="text-sm font-medium">{product.brand}</p>
+            </div>
+            <div className="flex flex-col">
+              <h5 className="text-sm font-bold">Número de serie:</h5>
+              <p className="text-sm font-medium">{product.serial}</p>
+            </div>
+            <div className="flex flex-col">
+              <h5 className="text-sm font-bold">Color:</h5>
+              <p className="text-sm font-medium">{product.color}</p>
+            </div>
+            <div className="flex flex-col">
+              <h5 className="text-sm font-bold">Estado:</h5>
+              <p className="text-sm font-medium">{product.state}</p>
+            </div>
+            <div className="flex flex-col">
+              <h5 className="text-sm font-bold">Medidas:</h5>
+              <p className="text-sm font-medium">{product.measures}</p>
+            </div>
+            <div className="flex flex-col">
+              <h5 className="text-sm font-bold">Constancia de uso:</h5>
+              <p className="text-sm font-medium">{product.condition_use}</p>
+            </div>
+            <div className="flex flex-col">
+              <h5 className="text-sm font-bold">Cantidad:</h5>
+              <p className="text-sm font-medium">{product.quantity}</p>
+            </div>
+            <div className="flex flex-col">
+              <h5 className="text-sm font-bold">Fecha de compra:</h5>
+              <p className="text-sm font-medium">
+                {new Date(product.created_at)
+                  .toLocaleDateString("es-ES", {
+                    year: "numeric",
+                    month: "long",
+                  })
+                  .replace(/^\w/, (c) => c.toUpperCase())}
+              </p>
+              <p>{product.created_at.split("T")[0]}</p>
+            </div>
+          </div>
+          <div className="w-full mt-5">
+            <Barcode
+              value={product.id}
+              width={0.9}
+              height={80}
+              background="#b2eab8"
+            />
+          </div>
+        </div>
+      </div>
+    </Layout>
   );
 };
 

@@ -6,7 +6,13 @@ import styles from "./ProductSlideshow.module.css";
 
 const ProductSlideshow = ({ images }) => {
   if (!Array.isArray(images) || images.length === 0) {
-    return <div>No hay imágenes disponibles</div>;
+    return (
+      <img
+        src={`/images/producto.jpeg`}
+        alt={`producto`}
+        className="w-full aspect-square"
+      />
+    );
   }
   return (
     <Slide easing="ease" duration={7000} indicators>
@@ -31,4 +37,4 @@ ProductSlideshow.propTypes = {
   images: PropTypes.arrayOf(PropTypes.string).isRequired,
 };
 
-export { ProductSlideshow };  
+export { ProductSlideshow };

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { supabase } from '../utils/client';
 import './EquipmentForm.css';
-import { Typography } from '@mui/material';
+import Layout from './Layout';
 
 const EquipmentForm = () => {
     const [formData, setFormData] = useState({
@@ -137,216 +137,218 @@ const EquipmentForm = () => {
     const sortedStateOptions = stateOptions.slice().sort();
 
     return (
-        <form className="equipment-form" onSubmit={handleSubmit}>
-            <div className="form-row">
-                <div className="field">
-                    <Typography variant='subtitle1' component='subtitle1'>
-                        Tipo de Activo:
-                        <input
-                            type="text"
-                            name="active_type"
-                            value={formData.active_type}
-                            onChange={handleChange}
-                        />
-                    </Typography>
-                </div>
-                <div className="field">
-                    <Typography variant='subtitle1' component='subtitle1'>
-                        Nombre del Equipo:
-                        <input
-                            type="text"
-                            name="title"
-                            value={formData.title}
-                            onChange={handleChange}
-                        />
-                    </Typography>
-                </div>
-                <div className="field">
-                    <Typography variant='subtitle1' component='subtitle1'>
-                        Cantidad:
-                        <input
-                            type="number"
-                            name="quantity"
-                            value={formData.quantity}
-                            onChange={handleChange}
-                        />
-                    </Typography>
-                </div>
-                <div className="field">
-                    <Typography variant='subtitle1' component='subtitle1'>
-                        Marca:
-                        <input
-                            type="text"
-                            name="brand"
-                            value={formData.brand}
-                            onChange={handleChange}
-                        />
-                    </Typography>
-                </div>
-            </div>
-
-            <div className="form-row">
-                <div className="field">
-                    <Typography variant='subtitle1' component='subtitle1'>
-                        Modelo:
-                        <input
-                            type="text"
-                            name="model"
-                            value={formData.model}
-                            onChange={handleChange}
-                        />
-                    </Typography>
-                </div>
-                <div className="field">
-                    <Typography variant='subtitle1' component='subtitle1'>
-                        Número de Serie:
-                        <input
-                            type="text"
-                            name="serial"
-                            value={formData.serial}
-                            onChange={handleChange}
-                        />
-                    </Typography>
-                </div>
-                <div className="field">
-                    <Typography variant='subtitle1' component='subtitle1'>
-                        Medidas:
-                        <input
-                            type="text"
-                            name="measures"
-                            value={formData.measures}
-                            onChange={handleChange}
-                        />
-                    </Typography>
-                </div>
-                <div className="field">
-                    <Typography variant='subtitle1' component='subtitle1'>
-                        Color:
-                        <input
-                            type="text"
-                            name="color"
-                            value={formData.color}
-                            onChange={handleChange}
-                        />
-                    </Typography>
-                </div>
-            </div>
-
-            <div className="form-row">
-                <div className="field">
-                    <Typography variant='subtitle1' component='subtitle1'>
-                        Estado:
-                        <div className="styled-select">
-                            <select
-                                name="state"
-                                value={formData.state}
-                                onChange={handleChange}
-                                className="styled-select"
-                            >
-                                <option value="">Selecciona una opción</option>
-                                {sortedStateOptions.map((option) => (
-                                    <option key={option} value={option}>
-                                        {option}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </Typography>
-                </div>
-                <div className="field">
-                    <Typography variant='subtitle1' component='subtitle1'>
-                        Condición de Uso:
-                        <div className="styled-select">
-                            <select
-                                name="condition_use"
-                                value={formData.condition_use}
-                                onChange={handleChange}
-                                className="styled-select"
-                            >
-                                <option value="">Selecciona una opción</option>
-                                {yesNoOptions.map((option) => (
-                                    <option key={option} value={option}>
-                                        {option}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </Typography>
-                </div>
-
-                <div className="field">
-                    <Typography variant='subtitle1' component='subtitle1'>
-                        Encargado del Equipo:
-                        <div className="styled-select">
-                            <select
-                                name="attendant"
-                                value={formData.attendant}
-                                onChange={handleChange}
-                            >
-                                <option value="">Selecciona una opción</option>
-                                {sortedAttendantOptions.map((option) => (
-                                    <option key={option} value={option}>
-                                        {option}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </Typography>
-                </div>
-
-                <div className="field">
-                    <Typography variant='subtitle1' component='subtitle1'>
-                        Área:
-                        <div className="styled-select">
-                            <select
-                                name="area"
-                                value={formData.area}
-                                onChange={handleChange}
-                                className="styled-select"
-                            >
-                                <option value="">Selecciona una opción</option>
-                                {sortedAreaOptions.map((option) => (
-                                    <option key={option} value={option}>
-                                        {option}
-                                    </option>
-                                ))}
-                            </select>
-                        </div>
-                    </Typography>
-                </div>
-
-
-            </div>
-
-            <div className="form-row">
-                <div className="field">
-                    <Typography variant='subtitle1' component='subtitle1'>
-                        Slug:
-                        <input
-                            type="text"
-                            name="slug"
-                            value={formData.slug}
-                            onChange={handleChange}
-                            readOnly
-                        />
-                    </Typography>
-                </div>
+        <Layout>
+            <form className="equipment-form" onSubmit={handleSubmit}>
                 <div className="form-row">
-                    <button type="submit">Guardar</button>
+                    <div className="field">
+                        <label className='text-xs font-semibold'>
+                            Tipo de Activo:
+                            <input                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     
+                                type="text"
+                                name="active_type"
+                                value={formData.active_type}
+                                onChange={handleChange}
+                            />
+                        </label>
+                    </div>
+                    <div className="field">
+                        <label className='text-xs font-semibold'>
+                            Nombre del Equipo:
+                            <input
+                                type="text"
+                                name="title"
+                                value={formData.title}
+                                onChange={handleChange}
+                            />
+                        </label>
+                    </div>
+                    <div className="field">
+                        <label className='text-xs font-semibold'>
+                            Cantidad:
+                            <input
+                                type="number"
+                                name="quantity"
+                                value={formData.quantity}
+                                onChange={handleChange}
+                            />
+                        </label>
+                    </div>
+                    <div className="field">
+                        <label className='text-xs font-semibold'>
+                            Marca:
+                            <input
+                                type="text"
+                                name="brand"
+                                value={formData.brand}
+                                onChange={handleChange}
+                            />
+                        </label>
+                    </div>
                 </div>
-                <div className="field"></div>
-                <div className="field"></div>
-            </div>
 
-
-
-            {showSuccessDialog && (
-                <div className="success-dialog">
-                    <p>Se ha guardado exitosamente</p>
-                    <button onClick={handleAccept}>Aceptar</button>
+                <div className="form-row">
+                    <div className="field">
+                        <label className='text-xs font-semibold'>
+                            Modelo:
+                            <input
+                                type="text"
+                                name="model"
+                                value={formData.model}
+                                onChange={handleChange}
+                            />
+                        </label>
+                    </div>
+                    <div className="field">
+                        <label className='text-xs font-semibold'>
+                            Número de Serie:
+                            <input
+                                type="text"
+                                name="serial"
+                                value={formData.serial}
+                                onChange={handleChange}
+                            />
+                        </label>
+                    </div>
+                    <div className="field">
+                        <label className='text-xs font-semibold'>
+                            Medidas:
+                            <input
+                                type="text"
+                                name="measures"
+                                value={formData.measures}
+                                onChange={handleChange}
+                            />
+                        </label>
+                    </div>
+                    <div className="field">
+                        <label className='text-xs font-semibold'>
+                            Color:
+                            <input
+                                type="text"
+                                name="color"
+                                value={formData.color}
+                                onChange={handleChange}
+                            />
+                        </label>
+                    </div>
                 </div>
-            )}
-        </form>
+
+                <div className="form-row">
+                    <div className="field">
+                        <label className='text-xs font-semibold'>
+                            Estado:
+                            <div className="styled-select">
+                                <select
+                                    name="state"
+                                    value={formData.state}
+                                    onChange={handleChange}
+                                    className="styled-select"
+                                >
+                                    <option value="">Selecciona una opción</option>
+                                    {sortedStateOptions.map((option) => (
+                                        <option key={option} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </label>
+                    </div>
+                    <div className="field">
+                        <label className='text-xs font-semibold'>
+                            Condición de Uso:
+                            <div className="styled-select">
+                                <select
+                                    name="condition_use"
+                                    value={formData.condition_use}
+                                    onChange={handleChange}
+                                    className="styled-select"
+                                >
+                                    <option value="">Selecciona una opción</option>
+                                    {yesNoOptions.map((option) => (
+                                        <option key={option} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div className="field">
+                        <label className='text-xs font-semibold'>
+                            Encargado del Equipo:
+                            <div className="styled-select">
+                                <select
+                                    name="attendant"
+                                    value={formData.attendant}
+                                    onChange={handleChange}
+                                >
+                                    <option value="">Selecciona una opción</option>
+                                    {sortedAttendantOptions.map((option) => (
+                                        <option key={option} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </label>
+                    </div>
+
+                    <div className="field">
+                        <label className='text-xs font-semibold'>
+                            Área:
+                            <div className="styled-select">
+                                <select
+                                    name="area"
+                                    value={formData.area}
+                                    onChange={handleChange}
+                                    className="styled-select"
+                                >
+                                    <option value="">Selecciona una opción</option>
+                                    {sortedAreaOptions.map((option) => (
+                                        <option key={option} value={option}>
+                                            {option}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </label>
+                    </div>
+
+
+                </div>
+
+                <div className="form-row">
+                    <div className="field">
+                        <label className='text-xs font-semibold'>
+                            Slug:
+                            <input
+                                type="text"
+                                name="slug"
+                                value={formData.slug}
+                                onChange={handleChange}
+                                readOnly
+                            />
+                        </label>
+                    </div>
+                    <div className="form-row">
+                        <button type="submit">Guardar</button>
+                    </div>
+                    <div className="field"></div>
+                    <div className="field"></div>
+                </div>
+
+
+
+                {showSuccessDialog && (
+                    <div className="success-dialog">
+                        <p>Se ha guardado exitosamente</p>
+                        <button onClick={handleAccept}>Aceptar</button>
+                    </div>
+                )}
+            </form>
+        </Layout>
     );
 };
 

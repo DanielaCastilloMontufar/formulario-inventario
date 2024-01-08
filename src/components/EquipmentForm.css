@@ -11,12 +11,12 @@
   gap: 100px;
   margin-left: 0px;
   padding-left: 0px;
-  justify-content: start;
+  /* justify-content: start; */
 }
 
 .field {
   width: 100%;
-  justify-content: start;
+  /* justify-content: start; */
 }
 
 input {
